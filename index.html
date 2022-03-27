@@ -12,7 +12,7 @@
 
     <div id="main">
       <div id="container" @click='showShare = false' :class='{infoVisible: showInfo == true, shareVisible: showShare == true, overviewVisible: viewElement > -1}'>
-        <h1>Perodic Table</h1>
+        <h1>Perodic Table By Unknown 69 (Samyak)</h1>
         <div class="elements">
           <div :class='elementClass(element, index)' v-for="(element, index) in elements" @click="showElement(index, $event)" :key="element.id">{{element.symbol}}</div>
         </div>
