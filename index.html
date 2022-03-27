@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Periodic Table By Samyak</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+
+  <body>
+
+    <div id="main">
+      <div id="container" @click='showShare = false' :class='{infoVisible: showInfo == true, shareVisible: showShare == true, overviewVisible: viewElement > -1}'>
+        <h1>Perodic Table</h1>
+        <div class="elements">
+          <div :class='elementClass(element, index)' v-for="(element, index) in elements" @click="showElement(index, $event)" :key="element.id">{{element.symbol}}</div>
+        </div>
+        <div class="legend">
+          <h3>Categories</h3>
+          <div class="categories">
+            <div v-for="category in categories" @mouseover="showCategory = category.categoryClean" @mouseleave="showCategory = ''">
+              <span class='color' :class='category.categoryClean'></span>
+              <span class="caregory">{{category.category}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='sidebar' :class="{show: viewElement > -1}">
+        <div class='head'>
+
+          <span class="number">{{currentElement.number}}</span>
+          <span class='phase' :style='{"background-image": "url(" + getPhaseIcon +")"}' :title="currentElement.phase"></span>
+          <span class="symbol">{{currentElement.symbol}}</span>
+          <span class="name">{{currentElement.name}}</span>
+          <span class="atomic-mass">{{currentElement.atomic_mass}}</span>
+
+        </div>
+        <div class='body'>
+          <h3>
+            Overview
+          </h3>
+          <div class="desc">
+            {{currentElement.summary}}
+          </div>
+          <div class='properties'>
+            <div class='prop' v-for="prop in overview" v-if='prop.value != null'>
+              <span class='icon'>{{prop.icon}}</span>
+              <span class='text'>{{prop.text}}</span>
+              <span class='value'>{{prop.value}}</span>
+            </div>
+          </div>
+        </div>
+        <div id='shells'>
+          <div v-for="(shells, index) in currentElement.shells">
+            <span v-for='(shell, index) in shells' :style='{"transform": "rotate("+ (360 / shells * index) + "deg)"}'></span>
+          </div>
+        </div>
+      </div>
+      <!-- <div id="actions" @click="viewElement = -1">
+        <span class="search" @click="searchMode = !searchMode"><i class="ion ion-md-search"></i></span>
+        <span class="info" @click="showInfo = true"><i class="ion ion-md-information-circle"></i></span>
+        <span class="share" @click="showShare = true"><i class="ion ion-md-share"></i></span>
+      </div> -->
+      <div id="search" :class="{show: searchMode == true}" @click="viewElement = -1">
+        <input type='text' @input="searchElements" ref='searchInput'>
+        <span class='close' @click="searchMode = false">×</span>
+      </div>
+      <div id="info" :class="{show: showInfo == true}">
+        <div class='close' @click='showInfo = false'>×</div>
+        <div class='project'>
+          <h2>This Project</h2>
+          <p>I made this project to further my knoweldge in Vuejs. The information provided are for demonstration purposes only. You are free to use the data (check source below) and the project code as you wish. Please check my other projects in the list below.</p>
+        </div>
+
+        <div class='resources'>
+          <h2>Made with</h2>
+
+          <li><a target="_blank" href='https://vuejs.org/'>Vue.js</a></li>
+          <li><a target="_blank" href='https://github.com/Bowserinator/Periodic-Table-JSON'>Periodic Table JSON</a></li>
+          <hr />
+          <li><a target="_blank" href='http://www.socicon.com/'>Socicon</a></li>
+          <li><a target="_blank" href='https://thenounproject.com/christinawittgeorge/'>Cube icon</a></li>
+          <li><a target="_blank" href='https://thenounproject.com/abhi.ashvi04/'>Gas icon</a></li>
+          <li><a target="_blank" href='https://thenounproject.com/term/liquid/947565/'>Liquid icon</a></li>
+          <hr />
+
+          <li><a target="_blank" href='https://fonts.google.com'>Google Fonts</a></li>
+
+
+        </div>
+        <div class='other-projects'>
+          <h2>Other Projects</h2>
+
+          <li><a target="_blank" href='https://codepen.io/khr2003/full/RENwGK'>Gradient Genearator</a></li>
+          <li><a target="_blank" href='https://codepen.io/khr2003/full/EOOVvV'>Border Radius Geneator</a></li>
+          <li><a target="_blank" href='https://codepen.io/khr2003/full/RqJddX'>Transform Property Playground</a></li>
+          <li><a target="_blank" href='https://codepen.io/khr2003/full/yQGaOL'>Box Shadow Generator</a></li>
+          <li><a target="_blank" href='https://codepen.io/khr2003/full/GwdaEG'>CSS Filter Playground</a></li>
+          <hr />
+
+          <li><a target="_blank" href='https://codepen.io/khr2003/'>All Projects</a></li>
+
+
+        </div>
+      </div>
+      <social-networks :show='showShare' @close='showShare = false'></social-networks>
+    </div>
+
+    <template id='social-networks'>
+      <div id='share-container' :class='{show: show == true}'>
+        <div v-for='(network, index) in networks' :href='network.link' target='_blank' @click="openPopup(network.link)" :style="{'background-color': [network.color]}">
+          <i class="icon" :class="[network.icon]"></i>
+        </div>
+        <div class='close' @click='$emit("close")'>×</div>
+      </div>
+    </template>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.21/vue.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js'></script>
+    <script src="./script.js"></script>
+
+  </body>
+
+</html>
